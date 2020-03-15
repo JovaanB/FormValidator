@@ -19,9 +19,13 @@ const showSuccess = (input, message) => {
 };
 
 // Check email is valid
-const isValidEmail = email => {
+const checkEmail = input => {
   const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return regex.test(String(email).toLowerCase());
+  if (regex.test(input.value.trim().toLowerCase())) {
+    showSuccess(input);
+  } else {
+    showError(input, `Email non valide.`);
+  }
 };
 
 // Check required fields
@@ -35,9 +39,33 @@ const checkRequired = inputArr => {
   });
 };
 
+// Check input length
+const checkLength = (input, min, max) => {
+  if (input.value.length < min) {
+    showError(input, `Minimum ${min} caractères requis.`);
+  } else if (input.value.length > max) {
+    showError(input, `Maximum ${max} caractères.`);
+  } else {
+    showSuccess(input);
+  }
+};
+
+// Check passwords match
+const checkPasswordMatch = (input1, input2) => {
+  if (input1.value !== input2.value) {
+    showError(input2, `Les mots de passe ne correspondent pas.`);
+  } else {
+    showSuccess(input2);
+  }
+};
+
 // Event listeners
 form.addEventListener('submit', e => {
   e.preventDefault();
 
   checkRequired([username, email, password, password2]);
+  checkLength(username, 3, 15);
+  checkLength(password, 6, 25);
+  checkEmail(email);
+  checkPasswordMatch(password, password2);
 });
