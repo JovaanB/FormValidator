@@ -24,38 +24,20 @@ const isValidEmail = email => {
   return regex.test(String(email).toLowerCase());
 };
 
+// Check required fields
+const checkRequired = inputArr => {
+  inputArr.forEach(input => {
+    if (input.value.trim() === '') {
+      showError(input, `Ce champ est requis.`);
+    } else {
+      showSuccess(input);
+    }
+  });
+};
+
 // Event listeners
 form.addEventListener('submit', e => {
   e.preventDefault();
-  if (username.value === '') {
-    showError(username, 'Ce champ est requis');
-  } else {
-    showSuccess(username);
-  }
 
-  if (username.value === '') {
-    showError(username, 'Ce champ est requis');
-  } else {
-    showSuccess(username);
-  }
-
-  if (email.value === '') {
-    showError(email, 'Ce champ est requis');
-  } else if (!isValidEmail(email.value)) {
-    showError(email, "Vérifiez votre email, il n'est pas valide");
-  } else {
-    showSuccess(email);
-  }
-
-  if (password.value === '') {
-    showError(password, 'Ce champ est requis');
-  } else {
-    showSuccess(password);
-  }
-
-  if (password2.value === '') {
-    showError(password2, 'Ce champ est requis');
-  } else {
-    showSuccess(password2);
-  }
+  checkRequired([username, email, password, password2]);
 });
